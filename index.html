@@ -211,18 +211,14 @@
 
   <div id="registros"></div>
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-
+ <script>
+	if ("serviceWorker" in navigator) {
+   	 navigator.serviceWorker.register("service-worker.js");
+ 	 }
     document.getElementById("placa").addEventListener("input", (e) => {
-      let valor = e.target.value.replace(/\D/g, '');
-      if (valor.length > 2) {
-        valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
-      }
-      if (valor.length > 10) {
-        valor = valor.slice(0, 10) + '-' + valor.slice(10, 14);
+      let valor = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+      if (valor.length > 3 && valor[3] !== '-') {
+        valor = valor.slice(0, 3) + '-' + valor.slice(3);
       }
       e.target.value = valor;
     });
@@ -232,7 +228,7 @@
       container.className = "servico";
 
       const descricao = document.createElement("input");
-      descricao.placeholder = "Bebida/Carvão/Essência/Etc..";
+      descricao.placeholder = "Serviço";
 
       const valor = document.createElement("input");
       valor.placeholder = "Valor (R$)";
@@ -240,52 +236,49 @@
       valor.step = "0.01";
       valor.min = "0";
 
-      const quantidade = document.createElement("input");
-      quantidade.placeholder = "Qtd";
-      quantidade.type = "number";
-      quantidade.min = "1";
-      quantidade.value = "1";
-
       container.appendChild(descricao);
       container.appendChild(valor);
-      container.appendChild(quantidade);
       document.getElementById("servicosContainer").appendChild(container);
     }
 
     function salvarRegistro() {
       const cliente = document.getElementById("cliente").value;
       const placa = document.getElementById("placa").value.toUpperCase();
+      const modeloMarca = document.getElementById("modeloMarca").value;
+      const resumo = document.getElementById("resumo").value;
+      const garantia = document.getElementById("garantia").value;
       const observacoes = document.getElementById("observacoes").value;
+      const maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
 
       const servicosInputs = document.querySelectorAll(".servico");
       let servicos = [];
-      let total = 0;
+      let total = maoDeObra;
 
       servicosInputs.forEach(s => {
         const descricao = s.children[0].value;
         const valor = parseFloat(s.children[1].value) || 0;
-        const quantidade = parseInt(s.children[2].value) || 1;
         if (descricao) {
-          servicos.push({ descricao, valor, quantidade });
-          total += valor * quantidade;
+          servicos.push({ descricao, valor });
+          total += valor;
         }
       });
 
-      const dataHora = new Date().toLocaleDateString('pt-BR');
+      const dataHora = new Date().toLocaleString();
 
-      const registro = { cliente, placa, servicos, observacoes, total, dataHora };
-      const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
-      registros.unshift(registro);  // Alterado de push para unshift para adicionar no início
-      localStorage.setItem("registrosJacare", JSON.stringify(registros));
+      const registro = { cliente, placa, modeloMarca, resumo, servicos, garantia, observacoes, maoDeObra, total, dataHora };
+      const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
+      registros.push(registro);
+      localStorage.setItem("registrosBentoCar", JSON.stringify(registros));
 
       mostrarRegistros();
 
       document.querySelectorAll("input, textarea").forEach(e => e.value = "");
+      document.getElementById("garantia").value = "";
       document.getElementById("servicosContainer").innerHTML = "";
     }
 
     function mostrarRegistros(filtro = "") {
-      const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
+      const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
       const container = document.getElementById("registros");
       container.innerHTML = "";
 
