@@ -5,16 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#fbcd18">
-  <title>Jacaré Nargs</title>
+  <title>JACARÉ</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  
-  <!-- Manifesto -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Ícone -->
-  <link rel="icon" href="icone.ico" type="image/x-icon">
-  
-  <style>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="https://i.imgur.com/uwP7jKa.png" type="image/x-icon">
+<style>
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +18,7 @@
     }
 
     body {
-      background: url('https://302017-litoralcar-org.s3.unifique.cloud/litoralcar/31/ferrari-812---2023-20595525-003.webp') no-repeat center center fixed;
+      background: url('https://i.imgur.com/PSyFkUo.png') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       padding: 20px;
@@ -39,7 +34,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(8px);
       z-index: -1;
     }
@@ -53,7 +48,6 @@
     select,
     textarea,
     button {
-      width: 100%;
       padding: 10px;
       margin-bottom: 10px;
       border: none;
@@ -64,12 +58,18 @@
     select,
     textarea {
       background-color: #EAEAEA;
-      color: #1C1C1C;
+      color: #000;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
     }
 
     button {
-      background-color: #fbcd18;
-      color: white;
+      width: 100%;
+      background-color: #15b611;
+      color: black;
       cursor: pointer;
     }
 
@@ -80,11 +80,24 @@
     .servico {
       display: flex;
       gap: 10px;
+      flex-wrap: nowrap;
+      margin-bottom: 10px;
+    }
+
+    .servico input:nth-child(1) {
+      flex: 2;
+      min-width: 0;
+    }
+
+    .servico input:nth-child(2),
+    .servico input:nth-child(3) {
+      flex: 1;
+      min-width: 0;
     }
 
     .registro {
-      background-color: #FAF3DD;
-      color: #1C1C1C;
+      background-color: #000;
+      color: #FAF3DD;
       padding: 50px 50px;
       border-radius: 10px;
       margin-top: 15px;
@@ -111,46 +124,85 @@
       max-width: 400px;
       display: block;
       margin: 0 auto 20px;
-      filter: drop-shadow(0 0 10px red);
+      filter: drop-shadow(0 0 10px #fbcd18);
     }
+
+    #btnAdicionarServico {
+      background-color: #fbcd18;
+      color: #1C1C1C;
+    }
+#confirmModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+#confirmBackdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+#confirmBox {
+  position: relative;
+  background: #000;
+  border: 2px solid #fbcd18;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  max-width: 300px;
+  text-align: center;
+  z-index: 1000;
+}
+
+#confirmActions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#confirmActions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#btnCancelar {
+  background-color: #ccc;
+  color: #000;
+}
+
+#btnConfirmar {
+  background-color: #fbcd18;
+  color: #000;
+}
+
   </style>
 </head>
 
 <body>
-  <img id="banner" src="https://i.imgur.com/9ZwyM3K.png" alt="Jacaré Nargs">
+  <img id="banner" src="https://i.imgur.com/uwP7jKa.png" alt="Jacaré">
 
   <label><i class="bi bi-person-fill"></i> Cliente:</label>
   <input type="text" id="cliente">
 
-  <label><i class="bi bi-car-front"></i> Placa do Carro:</label>
-  <input type="text" id="placa" style="text-transform: uppercase;">
-
-  <label><i class="bi bi-file-earmark-text"></i> Modelo/Marca:</label>
-  <input type="text" id="modeloMarca">
-
-  <label><i class="bi bi-pencil-square"></i> O que foi feito:</label>
-  <input type="text" id="resumo">
+  <label><i class="bi bi-whatsapp"></i> WhatsApp:</label>
+  <input type="text" id="placa" placeholder="Opcional...">
 
   <div id="servicosContainer"></div>
-  <button onclick="adicionarServico()"><i class="bi bi-plus-circle"></i> Adicionar Serviço</button>
-
-  <label><i class="bi bi-currency-dollar"></i> Mão de obra (R$):</label>
-  <input type="number" id="maoDeObra" step="0.01" min="0">
-
-  <label><i class="bi bi-shield-check"></i> Garantia:</label>
-  <select id="garantia">
-    <option value="">Sem garantia</option>
-    <option>1 semana</option>
-    <option>1 mês</option>
-    <option>3 meses</option>
-    <option>6 meses</option>
-    <option>1 ano</option>
-    <option>2 anos</option>
-    <option>5 anos</option>
-  </select>
+  <button id="btnAdicionarServico" onclick="adicionarServico()"><i class="bi bi-plus-circle"></i> Adicionar Produtos</button>
 
   <label><i class="bi bi-chat-left-dots"></i> Observações:</label>
-  <textarea id="observacoes"></textarea>
+  <textarea id="observacoes" style="width: 100%; height: 80px;"></textarea>
 
   <button onclick="salvarRegistro()"><i class="bi bi-save"></i> Salvar</button>
 
@@ -165,9 +217,12 @@
     }
 
     document.getElementById("placa").addEventListener("input", (e) => {
-      let valor = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-      if (valor.length > 3 && valor[3] !== '-') {
-        valor = valor.slice(0, 3) + '-' + valor.slice(3);
+      let valor = e.target.value.replace(/\D/g, '');
+      if (valor.length > 2) {
+        valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
+      }
+      if (valor.length > 10) {
+        valor = valor.slice(0, 10) + '-' + valor.slice(10, 14);
       }
       e.target.value = valor;
     });
@@ -177,7 +232,7 @@
       container.className = "servico";
 
       const descricao = document.createElement("input");
-      descricao.placeholder = "Serviço";
+      descricao.placeholder = "Bebida/Carvão/Essência/Etc..";
 
       const valor = document.createElement("input");
       valor.placeholder = "Valor (R$)";
@@ -185,49 +240,52 @@
       valor.step = "0.01";
       valor.min = "0";
 
+      const quantidade = document.createElement("input");
+      quantidade.placeholder = "Qtd";
+      quantidade.type = "number";
+      quantidade.min = "1";
+      quantidade.value = "1";
+
       container.appendChild(descricao);
       container.appendChild(valor);
+      container.appendChild(quantidade);
       document.getElementById("servicosContainer").appendChild(container);
     }
 
     function salvarRegistro() {
       const cliente = document.getElementById("cliente").value;
       const placa = document.getElementById("placa").value.toUpperCase();
-      const modeloMarca = document.getElementById("modeloMarca").value;
-      const resumo = document.getElementById("resumo").value;
-      const garantia = document.getElementById("garantia").value;
       const observacoes = document.getElementById("observacoes").value;
-      const maoDeObra = parseFloat(document.getElementById("maoDeObra").value) || 0;
 
       const servicosInputs = document.querySelectorAll(".servico");
       let servicos = [];
-      let total = maoDeObra;
+      let total = 0;
 
       servicosInputs.forEach(s => {
         const descricao = s.children[0].value;
         const valor = parseFloat(s.children[1].value) || 0;
+        const quantidade = parseInt(s.children[2].value) || 1;
         if (descricao) {
-          servicos.push({ descricao, valor });
-          total += valor;
+          servicos.push({ descricao, valor, quantidade });
+          total += valor * quantidade;
         }
       });
 
-      const dataHora = new Date().toLocaleString();
+      const dataHora = new Date().toLocaleDateString('pt-BR');
 
-      const registro = { cliente, placa, modeloMarca, resumo, servicos, garantia, observacoes, maoDeObra, total, dataHora };
-      const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
-      registros.push(registro);
-      localStorage.setItem("registrosBentoCar", JSON.stringify(registros));
+      const registro = { cliente, placa, servicos, observacoes, total, dataHora };
+      const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
+      registros.unshift(registro);  // Alterado de push para unshift para adicionar no início
+      localStorage.setItem("registrosJacare", JSON.stringify(registros));
 
       mostrarRegistros();
 
       document.querySelectorAll("input, textarea").forEach(e => e.value = "");
-      document.getElementById("garantia").value = "";
       document.getElementById("servicosContainer").innerHTML = "";
     }
 
     function mostrarRegistros(filtro = "") {
-      const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
+      const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
       const container = document.getElementById("registros");
       container.innerHTML = "";
 
@@ -243,22 +301,22 @@
       registrosFiltrados.forEach((r, index) => {
         const div = document.createElement("div");
         div.className = "registro";
-        let conteudo = `*🔧BENTO CAR🔧*\n`;
-        conteudo += `👤 *Cliente:* ${r.cliente}\n`;
-        conteudo += `🚗 *Placa:* ${r.placa}\n`;
-        conteudo += `📄 *Modelo/Marca:* ${r.modeloMarca}\n`;
-        conteudo += `✍️ *Resumo:* ${r.resumo}\n`;
+        let conteudo = `*🐊JACARÉ🍹*\n`;
+        conteudo += `📅 ${r.dataHora}\n`;
+        conteudo += `👤 ${r.cliente}\n`;
+        if (r.placa.trim() !== "") {
+          conteudo += `📱 ${r.placa}\n`;
+        }
         if (r.servicos.length > 0) {
-          conteudo += `🛠️ *Serviços:*\n`;
+          conteudo += `🍹💨 *Consumo: ⬇️*\n`;
           r.servicos.forEach(s => {
-            conteudo += `   • ${s.descricao} - R$ ${s.valor.toFixed(2)}\n`;
+            conteudo += `(${s.quantidade}) - ${s.descricao} - R$ ${s.valor.toFixed(2)}\n`;
           });
         }
-        conteudo += `📝 *Observações:* ${r.observacoes}\n`;
-        conteudo += `💰 *Mão de obra:* R$ ${r.maoDeObra.toFixed(2)}\n`;
-        if (r.garantia) conteudo += `📦 *Garantia:* ${r.garantia}\n`;
-        conteudo += `📅 *Data:* ${r.dataHora}\n`;
-        conteudo += `💵 *Total:* R$ ${r.total.toFixed(2)}`;
+        if (r.observacoes.trim() !== "") {
+          conteudo += `📝 *Observações:* ${r.observacoes}\n`;
+        }
+        conteudo += `💵 *Total: R$ ${r.total.toFixed(2)}*`;
 
         const pre = document.createElement("pre");
         pre.textContent = conteudo;
@@ -267,12 +325,12 @@
         const btnDel = document.createElement("button");
         btnDel.innerHTML = '<i class="bi bi-trash"></i> Apagar';
         btnDel.onclick = () => {
-          if (confirm(`Tem certeza que deseja apagar o registro de ${r.cliente}?`)) {
-            const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
+          mostrarConfirmacao(`Tem certeza que deseja apagar o registro de ${r.cliente}?`, () => {
+            const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
             registros.splice(index, 1);
-            localStorage.setItem("registrosBentoCar", JSON.stringify(registros));
+            localStorage.setItem("registrosJacare", JSON.stringify(registros));
             mostrarRegistros();
-          }
+          });
         };
 
         const btnEdit = document.createElement("button");
@@ -280,11 +338,7 @@
         btnEdit.onclick = () => {
           document.getElementById("cliente").value = r.cliente;
           document.getElementById("placa").value = r.placa;
-          document.getElementById("modeloMarca").value = r.modeloMarca;
-          document.getElementById("resumo").value = r.resumo;
-          document.getElementById("garantia").value = r.garantia;
           document.getElementById("observacoes").value = r.observacoes;
-          document.getElementById("maoDeObra").value = r.maoDeObra;
 
           document.getElementById("servicosContainer").innerHTML = "";
           r.servicos.forEach(s => {
@@ -293,11 +347,12 @@
             const ultimo = ult[ult.length - 1];
             ultimo.children[0].value = s.descricao;
             ultimo.children[1].value = s.valor;
+            ultimo.children[2].value = s.quantidade;
           });
 
-          const registros = JSON.parse(localStorage.getItem("registrosBentoCar")) || [];
+          const registros = JSON.parse(localStorage.getItem("registrosJacare")) || [];
           registros.splice(index, 1);
-          localStorage.setItem("registrosBentoCar", JSON.stringify(registros));
+          localStorage.setItem("registrosJacare", JSON.stringify(registros));
           mostrarRegistros();
         };
 
@@ -321,7 +376,42 @@
     });
 
     mostrarRegistros();
+
+    function mostrarConfirmacao(mensagem, callback) {
+      const modal = document.getElementById("confirmModal");
+      const texto = document.getElementById("confirmText");
+      const btnCancelar = document.getElementById("btnCancelar");
+      const btnConfirmar = document.getElementById("btnConfirmar");
+
+      texto.textContent = mensagem;
+      modal.style.display = "flex";
+
+      const limpar = () => {
+        modal.style.display = "none";
+        btnCancelar.onclick = null;
+        btnConfirmar.onclick = null;
+      };
+
+      btnCancelar.onclick = () => {
+        limpar();
+      };
+
+      btnConfirmar.onclick = () => {
+        limpar();
+        callback();
+      };
+    }
   </script>
+  <div id="confirmModal" style="display:none;">
+    <div id="confirmBackdrop"></div>
+    <div id="confirmBox">
+      <p id="confirmText">Tem certeza que deseja apagar?</p>
+      <div id="confirmActions">
+        <button id="btnCancelar">Cancelar</button>
+        <button id="btnConfirmar">Apagar</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
